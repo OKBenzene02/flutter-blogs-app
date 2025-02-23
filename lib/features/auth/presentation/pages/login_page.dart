@@ -1,8 +1,10 @@
 import 'package:blogs_app/core/theme/app_pallet.dart';
+import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:blogs_app/features/auth/presentation/widgets/auth_field.dart';
 import 'package:blogs_app/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -64,8 +66,11 @@ class LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 15,
               ),
-              const AuthGradientButton(
+              AuthGradientButton(
                 btnText: "Sign In",
+                onPressed: () {
+                  
+                },
               ),
               const SizedBox(
                 height: 18,

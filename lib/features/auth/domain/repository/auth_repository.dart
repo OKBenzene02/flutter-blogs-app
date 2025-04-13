@@ -13,4 +13,6 @@ abstract interface class AuthRepository {
     required String email,
     required String password,
   });
+
+  Future<Either<Failures, User>> currentUser();
 }

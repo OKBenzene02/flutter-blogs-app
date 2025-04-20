@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:blogs_app/core/theme/app_pallet.dart';
+import 'package:blogs_app/core/utils/pick_image.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_editor.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,16 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
   List<String> topics = [];
+  File? image;
+
+  void selectImage() async {
+    final pickedImage = await pickImage();
+    if (pickedImage != null) {
+      setState(() {
+        image = pickedImage;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -42,32 +54,37 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              DottedBorder(
-                color: AppPallete.borderColor,
-                dashPattern: const [10, 4],
-                radius: const Radius.circular(12),
-                borderType: BorderType.RRect,
-                strokeCap: StrokeCap.round,
-                child: Container(
-                  height: 150,
-                  width: double.infinity,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.folder_open_rounded,
-                        size: 40,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        'Select your image',
-                        style: TextStyle(
-                          fontSize: 16,
+              GestureDetector(
+                onTap: () {
+                  selectImage();
+                },
+                child: DottedBorder(
+                  color: AppPallete.borderColor,
+                  dashPattern: const [10, 4],
+                  radius: const Radius.circular(12),
+                  borderType: BorderType.RRect,
+                  strokeCap: StrokeCap.round,
+                  child: Container(
+                    height: 150,
+                    width: double.infinity,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.folder_open_rounded,
+                          size: 40,
                         ),
-                      )
-                    ],
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          'Select your image',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

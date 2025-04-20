@@ -16,6 +16,7 @@ class AddNewBlogPage extends StatefulWidget {
 class _AddNewBlogPageState extends State<AddNewBlogPage> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
+  List<String> topics = [];
 
   @override
   void dispose() {
@@ -83,10 +84,26 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
                         (tag) => Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 5),
-                          child: Chip(
-                            label: Text(tag),
-                            side: const BorderSide(
-                              color: AppPallete.borderColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (topics.contains(tag)) {
+                                topics.remove(tag);
+                              } else {
+                                topics.add(tag);
+                              }
+                              setState(() {});
+                            },
+                            child: Chip(
+                              label: Text(tag),
+                              color: topics.contains(tag)
+                                  ? const WidgetStatePropertyAll(
+                                      AppPallete.gradient1)
+                                  : null,
+                              side: BorderSide(
+                                color: topics.contains(tag)
+                                    ? AppPallete.gradient1
+                                    : AppPallete.borderColor,
+                              ),
                             ),
                           ),
                         ),
@@ -102,7 +119,10 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
                 height: 12,
               ),
               BlogEditor(
-                  controller: contentController, hintText: 'Blog content')
+                  controller: contentController, hintText: 'Blog content'),
+              const SizedBox(
+                height: 12,
+              )
             ],
           ),
         ),

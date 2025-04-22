@@ -33,4 +33,24 @@ class BlogModel extends BlogEntity {
       topicTags: map['topic_tags'] as List<String>,
     );
   }
+
+  
+  BlogModel copyWith({
+    String? id,
+    DateTime? updatedAt,
+    String? userId,
+    String? title,
+    String? content,
+    String? imageURL,
+    List<String>? topicTags,
+  }) {
+    return BlogModel(
+        id: id ?? this.id,
+        updatedAt: updatedAt ?? this.updatedAt,
+        userId: userId ?? this.userId,
+        title: title ?? this.title,
+        content: content ?? this.content,
+        imageURL: imageURL ?? this.imageURL,
+        topicTags: topicTags ?? this.topicTags);
+  }
 }

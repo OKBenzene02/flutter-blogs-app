@@ -7,16 +7,16 @@ part 'blog_event.dart';
 part 'blog_state.dart';
 
 class BlogBloc extends Bloc<BlogEvent, BlogState> {
-  final BlogUpload uploadBlog;
+  final BlogUpload _uploadBlog;
 
-  BlogBloc(this.uploadBlog) : super(BlogInitial()) {
+  BlogBloc({ required BlogUpload uploadBlog }) : _uploadBlog = uploadBlog ,super(BlogInitial()) {
     on<BlogEvent>((event, emit) => emit(BlogLoading()));
     on<BlogUploadEvent>(_onBlogUpload);
   }
 
   Future<void> _onBlogUpload(
       BlogUploadEvent event, Emitter<BlogState> emit) async {
-    final res = await uploadBlog(
+    final res = await _uploadBlog(
       BlogUploadParams(
           userId: event.userId,
           title: event.title,

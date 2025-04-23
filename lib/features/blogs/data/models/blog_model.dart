@@ -25,16 +25,17 @@ class BlogModel extends BlogEntity {
   factory BlogModel.fromJson(Map<String, dynamic> map) {
     return BlogModel(
       id: map['id'] as String,
-      updatedAt: map['updated_at'] ? DateTime.now() : DateTime.parse(map['updatedAt']),
+      updatedAt: map['updated_at'] != null
+          ? DateTime.parse(map['updated_at'])
+          : DateTime.now(),
       userId: map['user_id'] as String,
       title: map['title'] as String,
       content: map['content'] as String,
       imageURL: map['image_url'] as String,
-      topicTags: map['topic_tags'] as List<String>,
+      topicTags: List<String>.from(map['topic_tags'] ?? []),
     );
   }
 
-  
   BlogModel copyWith({
     String? id,
     DateTime? updatedAt,

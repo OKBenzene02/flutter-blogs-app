@@ -11,6 +11,7 @@ import 'package:blogs_app/features/blogs/data/repositories/blog_repository_imple
 import 'package:blogs_app/features/blogs/data/sources/blog_remote_data_sources.dart';
 import 'package:blogs_app/features/blogs/domain/repositories/blog_repository.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/blog_upload.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/get_all_blogs.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/blog_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:get_it/get_it.dart';
@@ -64,14 +65,20 @@ void _initBlog() {
     ..registerFactory<BlogRemoteDataSources>(() =>
         BlogRemoteDataSourceImplementation(
             supabaseClient: serviceLocator<SupabaseClient>()))
-    
+
     // Repository
     ..registerFactory<BlogRepository>(() =>
         BlogRepositoryImplementation(blogRemoteDataSources: serviceLocator()))
 
-    // Usecase
+    // Usecase for blog upload
     ..registerFactory(() => BlogUpload(blogRepository: serviceLocator()))
 
+    // Usecase for get all blogs
+    ..registerFactory(() => GetAllBlogs(blogRepository: serviceLocator()))
+
     // Blog bloc
-    ..registerLazySingleton(() => BlogBloc(uploadBlog: serviceLocator()));
+    ..registerLazySingleton(() => BlogBloc(
+          uploadBlog: serviceLocator(),
+          getAllBlogs: serviceLocator(),
+        ));
 }

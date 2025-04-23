@@ -1,14 +1,16 @@
 import 'package:blogs_app/features/blogs/domain/entities/blog_entity.dart';
 
 class BlogModel extends BlogEntity {
-  BlogModel(
-      {required super.id,
-      required super.updatedAt,
-      required super.userId,
-      required super.title,
-      required super.content,
-      required super.imageURL,
-      required super.topicTags});
+  BlogModel({
+    required super.id,
+    required super.updatedAt,
+    required super.userId,
+    required super.title,
+    required super.content,
+    required super.imageURL,
+    required super.topicTags,
+    super.userName,
+  });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -44,14 +46,17 @@ class BlogModel extends BlogEntity {
     String? content,
     String? imageURL,
     List<String>? topicTags,
+    String? userName,
   }) {
     return BlogModel(
-        id: id ?? this.id,
-        updatedAt: updatedAt ?? this.updatedAt,
-        userId: userId ?? this.userId,
-        title: title ?? this.title,
-        content: content ?? this.content,
-        imageURL: imageURL ?? this.imageURL,
-        topicTags: topicTags ?? this.topicTags);
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      userId: userId ?? this.userId,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      imageURL: imageURL ?? this.imageURL,
+      topicTags: topicTags ?? this.topicTags,
+      userName: userName ?? this.userName,
+    );
   }
 }

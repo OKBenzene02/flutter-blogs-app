@@ -6,6 +6,7 @@ class BlogEntity {
   final String content;
   final String imageURL;
   final List<String> topicTags;
+  final String? userName;
 
   BlogEntity({
     required this.id,
@@ -15,5 +16,6 @@ class BlogEntity {
     required this.content,
     required this.imageURL,
     required this.topicTags,
+    this.userName,
   });
 }

@@ -61,7 +61,7 @@ void _initAuth() {
 void _initBlog() {
   // Data source
   serviceLocator
-    ..registerFactory<BlogRemoteDataSourceImplementation>(() =>
+    ..registerFactory<BlogRemoteDataSources>(() =>
         BlogRemoteDataSourceImplementation(
             supabaseClient: serviceLocator<SupabaseClient>()))
     

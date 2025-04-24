@@ -63,6 +63,7 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Center(child: Text('Add New Blog')),
         actions: [
           IconButton(

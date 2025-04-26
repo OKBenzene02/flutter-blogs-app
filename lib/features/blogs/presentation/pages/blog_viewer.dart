@@ -59,7 +59,7 @@ class BlogViewer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
                     imageUrl:
-                        'https://pktjzelwrksxtdnaqvhv.supabase.co/storage/v1/object/sign/blog_images/2a4fcc20-205f-11f0-9a4e-577aad290057?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJibG9nX2ltYWdlcy8yYTRmY2MyMC0yMDVmLTExZjAtOWE0ZS01NzdhYWQyOTAwNTciLCJpYXQiOjE3NDU1MTc2MjIsImV4cCI6MTc0NjEyMjQyMn0.dzwhh7HUKPDvDKo-hA2udzWLyFax_sDMYyXu_hJQpo0',
+                        blog.imageURL,
                     progressIndicatorBuilder:
                         (context, url, downloadProgress) =>
                             CircularProgressIndicator(

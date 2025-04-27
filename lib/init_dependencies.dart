@@ -10,12 +10,15 @@ import 'package:blogs_app/features/auth/domain/usecases/user_login.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/blogs/data/repositories/blog_repository_implementation.dart';
+import 'package:blogs_app/features/blogs/data/sources/blog_local_data_sources.dart';
 import 'package:blogs_app/features/blogs/data/sources/blog_remote_data_sources.dart';
 import 'package:blogs_app/features/blogs/domain/repositories/blog_repository.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/blog_upload.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/get_all_blogs.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/blog_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:get_it/get_it.dart';
 
@@ -27,10 +30,14 @@ Future<void> initDependencies() async {
   final supabase = await Supabase.initialize(
       url: AppSecrets.appUrl, anonKey: AppSecrets.apiKey);
 
+  Hive.defaultDirectory = (await getApplicationDocumentsDirectory()).path;
+
   serviceLocator.registerLazySingleton(() => supabase.client);
   serviceLocator.registerFactory(() => InternetConnection());
   serviceLocator.registerLazySingleton(() => AppUserCubit());
-  serviceLocator.registerFactory<ConnectionChecker>(() => ConnectionCheckerImplementation(internetConnection: serviceLocator()));
+  serviceLocator.registerFactory<ConnectionChecker>(() =>
+      ConnectionCheckerImplementation(internetConnection: serviceLocator()));
+  serviceLocator.registerLazySingleton(() => Hive.box(name: 'blogs'));
 }
 
 void _initAuth() {
@@ -68,13 +75,25 @@ void _initAuth() {
 void _initBlog() {
   // Data source
   serviceLocator
-    ..registerFactory<BlogRemoteDataSources>(() =>
-        BlogRemoteDataSourceImplementation(
-            supabaseClient: serviceLocator<SupabaseClient>()))
-
+    ..registerFactory<BlogRemoteDataSources>(
+      () => BlogRemoteDataSourceImplementation(
+        supabaseClient: serviceLocator<SupabaseClient>(),
+      ),
+    )
+    /// Local data source for blogs application
+    ..registerFactory<BlogLocalDataSources>(
+      () => BlogLocaDataSourceImplementation(
+        box: serviceLocator<Box>(),
+      ),
+    )
     // Repository
-    ..registerFactory<BlogRepository>(() =>
-        BlogRepositoryImplementation(blogRemoteDataSources: serviceLocator()))
+    ..registerFactory<BlogRepository>(
+      () => BlogRepositoryImplementation(
+        blogRemoteDataSources: serviceLocator(),
+        blogLocalDataSources: serviceLocator(),
+        connectionChecker: serviceLocator(),
+      ),
+    )
 
     // Usecase for blog upload
     ..registerFactory(() => BlogUpload(blogRepository: serviceLocator()))
